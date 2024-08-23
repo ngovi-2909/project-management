@@ -5,14 +5,14 @@ import SearchComponent from "../common/components/SearchComponent";
 import {AntDesignOutlined, ExclamationCircleFilled} from "@ant-design/icons";
 import ProjectApiService from "../common/api/Project";
 import {Project} from "../common/types/Project";
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 const ProjectManagement: React.FC = () => {
     const [data, setData] = useState();
     const [projectTypes, setProjectTypes] = useState();
     const navigate = useNavigate();
     const [isOpen, setOpen] = useState(false);
     const { confirm } = Modal;
-
+    const location = useLocation();
     useEffect(() => {
         const fetchData = async () => {
             const project = await ProjectApiService.getProject();
@@ -57,11 +57,11 @@ const ProjectManagement: React.FC = () => {
         });
     };
 
-    const handleCancelDelete = () =>{
+    const handleCancelDelete = () => {
         setOpen(!isOpen);
     };
 
-    const handleUpdateProject = async (updatedProjects: any[]) => {
+    const handleSearchProject = async (updatedProjects: any[]) => {
         // @ts-ignore
         setData(updatedProjects);
     };
@@ -118,7 +118,7 @@ const ProjectManagement: React.FC = () => {
                     <Button type="primary" size="large" icon={<AntDesignOutlined/>} onClick={handleClick}>Add</Button>
                 </div>
                 <div className="search-component">
-                    <SearchComponent projectTypes={projectTypes} onProjectUpdate={handleUpdateProject}/>
+                    <SearchComponent projectTypes={projectTypes} onProjectUpdate={handleSearchProject}/>
                 </div>
                 <Table dataSource={data} columns={columns} pagination={{
                     position: ['bottomLeft'],

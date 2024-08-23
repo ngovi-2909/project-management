@@ -1,13 +1,15 @@
 import {Button, Form, Input, Select} from "antd";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ProjectType} from "../types/ProjectType";
 import Project from "../api/Project";
 import ProjectApiService from "../api/Project";
+import project from "../api/Project";
 
 
 const SearchComponent = (props: any) => {
     const {Option} = Select;
     const [form] = Form.useForm();
+    const [projectName, setProjectName] = useState();
     const formStyle = {
         maxWidth: 'none',
         borderRadius: '10px',
@@ -36,10 +38,10 @@ const SearchComponent = (props: any) => {
                     name="name"
                     style={{width: 'calc(60% - 8px)'}}
                     rules={[
-                        { pattern: /^[a-zA-Z0-9\s]+$/, message: 'Project name must not contain special characters' },
+                        {pattern: /^[a-zA-Z0-9\s]+$/, message: 'Project name must not contain special characters'},
                     ]}
                 >
-                    <Input size="large" placeholder="Project name..." />
+                    <Input size="large" placeholder="Project name..." maxLength={200} value={projectName}/>
                 </Form.Item>
                 <Form.Item
                     label="Type"
@@ -47,7 +49,7 @@ const SearchComponent = (props: any) => {
                     style={{width: 'calc(15% - 8px)'}}
                 >
                     <Select size="large"
-                            style={{ width: 120 }}
+                            style={{width: 120}}
                     >
                         <option value="">All</option>
                         {props.projectTypes && Array.isArray(props.projectTypes) && props.projectTypes.length > 0 && (
