@@ -1,0 +1,274 @@
+openapi: 3.0.0
+paths:
+  /api/v1/project:
+    post:
+      operationId: ProjectController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProjectDto"
+    get:
+      operationId: ProjectController_findAll
+      parameters:
+        - name: offset
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CreateProjectDto"
+  /api/v1/project/find/{code}:
+    get:
+      operationId: ProjectController_findOne
+      parameters:
+        - name: code
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProjectDto"
+  /api/v1/project/search:
+    get:
+      operationId: ProjectController_search
+      parameters:
+        - name: name
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: type
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: offset
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProjectDto"
+  /api/v1/project/{code}:
+    put:
+      operationId: ProjectController_update
+      parameters:
+        - name: code
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProjectDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProjectDto"
+    delete:
+      operationId: ProjectController_remove
+      parameters:
+        - name: code
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: number
+  /api/v1/project-type:
+    post:
+      operationId: ProjectTypeController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectTypeDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProjectTypeDto"
+    get:
+      operationId: ProjectTypeController_findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CreateProjectTypeDto"
+  /api/v1/project-type/{id}:
+    get:
+      operationId: ProjectTypeController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProjectTypeDto"
+    put:
+      operationId: ProjectTypeController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProjectTypeDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateProjectTypeDto"
+    delete:
+      operationId: ProjectTypeController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateProjectTypeDto"
+info:
+  title: Project management
+  description: Project API description
+  version: "1.0"
+  contact: {}
+tags:
+  - name: project
+    description: ""
+servers: []
+components:
+  schemas:
+    CreateProjectDto:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "111111"
+          nullable: false
+          description: project code
+        name:
+          type: string
+          example: Project name
+          nullable: false
+          description: project name
+        status:
+          type: boolean
+          example: true
+          nullable: false
+          description: project status
+        project_type_id:
+          type: number
+          example: 1
+          nullable: false
+          description: project type
+      required:
+        - code
+        - name
+        - status
+        - project_type_id
+    UpdateProjectDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The project name of the project
+          example: project name
+        project_type_id:
+          type: number
+          example: 1
+          nullable: false
+          description: project type
+        status:
+          type: boolean
+          example: true
+          nullable: false
+          description: project status
+      required:
+        - name
+        - project_type_id
+        - status
+    CreateProjectTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Project type
+          nullable: false
+          description: project type
+      required:
+        - name
+    UpdateProjectTypeDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Project type
+          nullable: false
+          description: project type
