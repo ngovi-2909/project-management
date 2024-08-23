@@ -122,7 +122,7 @@ const ProjectManagement: React.FC = () => {
                 </div>
                 <Table dataSource={data} columns={columns} pagination={{
                     position: ['bottomLeft'],
-                    pageSize: 50,
+                    pageSize: 5,
                     size: 'default'
                 }}/>
 

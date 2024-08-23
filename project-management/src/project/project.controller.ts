@@ -23,8 +23,8 @@ export class ProjectController {
 
   @Get()
   @ApiResponse({status: 200, type: [CreateProjectDto]})
-  findAll(@Query('offset') offset: number) {
-    return this.projectService.getAllProject(offset);
+  findAll() {
+    return this.projectService.getAllProject();
   }
 
   @Get('/find/:code')
@@ -37,9 +37,9 @@ export class ProjectController {
   @Get('/search')
   @ApiResponse({status: 200, type: CreateProjectDto })
   search(
-    @Query('name') name: string, @Query('type') type: number, @Query('offset') offset: number
+    @Query('name') name: string, @Query('type') type: number
   ) {
-    return this.projectService.searchProject(name, type, offset);
+    return this.projectService.searchProject(name, type);
   }
 
   @ApiResponse({status: 200, type: CreateProjectDto })

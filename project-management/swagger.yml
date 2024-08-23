@@ -19,12 +19,7 @@ paths:
                 $ref: "#/components/schemas/CreateProjectDto"
     get:
       operationId: ProjectController_findAll
-      parameters:
-        - name: offset
-          required: true
-          in: query
-          schema:
-            type: number
+      parameters: []
       responses:
         "200":
           description: ""
@@ -60,11 +55,6 @@ paths:
           schema:
             type: string
         - name: type
-          required: true
-          in: query
-          schema:
-            type: number
-        - name: offset
           required: true
           in: query
           schema:

@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
-import { Project } from "./entities/project.entity";
-import { Op, ValidationErrorItem } from 'sequelize';
-import { PROJECT_REPOSITORY } from "../core/constant";
+import {HttpException, HttpStatus, Inject, Injectable, NotFoundException} from "@nestjs/common";
+import {CreateProjectDto} from './dto/create-project.dto';
+import {UpdateProjectDto} from './dto/update-project.dto';
+import {Project} from "./entities/project.entity";
+import {Op} from 'sequelize';
+import {PROJECT_REPOSITORY} from "../core/constant";
 
 @Injectable()
 export class ProjectService {
@@ -17,13 +17,10 @@ export class ProjectService {
     }
   }
 
-  async getAllProject(offset: number) {
-      const result =  await this.projectRepository.findAndCountAll({
+  async getAllProject() {
+    return await this.projectRepository.findAll({
         order: [['code', 'ASC']],
-        limit: 5,
-        offset: offset || 0,
       });
-      return {data: result.rows, total: result.count};
   }
 
   async findOne(code: string) {
@@ -58,7 +55,7 @@ export class ProjectService {
     }
   }
 
-  async searchProject(name: string, type: number, offset: number){
+  async searchProject(name: string, type: number){
     const condition = {}
     if(name){
       condition['name'] = {
@@ -68,14 +65,11 @@ export class ProjectService {
     if(type){
       condition['project_type_id'] = type;
     }
-    const result =  await this.projectRepository.findAndCountAll({
+    return await this.projectRepository.findAll({
       attributes: ['code', 'name', 'status', 'project_type_id'],
       where: condition,
       order: [['code', 'ASC']],
-      limit: 20,
-      offset: offset || 0,
     });
-    return {data: result.rows, total: result.count};
   }
 
 }
