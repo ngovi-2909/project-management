@@ -18,7 +18,7 @@ export class CreateProjectDto {
     @ApiProperty({type: String,example: "Project name", nullable: false, description: 'project name'})
     @IsNotEmpty()
     @IsString()
-    @Matches(/^[a-zA-Z0-9\s]+$/, {
+    @Matches(/^[a-zA-Z0-9\u3040-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\s]+$/, { // Match Japan characters
         message: 'Project name must contain only letters, numbers, and spaces',
     })
     @MaxLength(200)

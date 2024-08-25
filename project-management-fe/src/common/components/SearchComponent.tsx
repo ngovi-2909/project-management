@@ -9,29 +9,40 @@ import project from "../api/Project";
 const SearchComponent = (props: any) => {
     const {Option} = Select;
     const [form] = Form.useForm();
-    const [projectName, setProjectName] = useState();
+    // @ts-ignore
+    const storedName = JSON.parse(localStorage.getItem('projectName'));
+    // @ts-ignore
+    const storedType = JSON.parse(localStorage.getItem('projectType'));
+    const [projectName, setProjectName] = useState(storedName);
+    const [projectType, setProjectType] = useState(storedType);
     const formStyle = {
         maxWidth: 'none',
         borderRadius: '10px',
         padding: 24,
         margin: '0 auto',
     };
-
+    const [project, setProject] = useState();
     const onFinish = async () => {
         const projectName = form.getFieldValue('name');
         const type = form.getFieldValue('project_type_id');
-
         const project = await ProjectApiService.searchProject(projectName, type);
+        localStorage.setItem('projectName', JSON.stringify(projectName));
+        localStorage.setItem('projectData', JSON.stringify(project));
+        localStorage.setItem('projectType', JSON.stringify(type));
+
         await props.onProjectUpdate(project);
     };
+
+    useEffect( () => {
+        form.setFieldsValue({
+            name: projectName,
+            project_type_id: projectType
+        });
+    }, []);
 
     return (
         <>
             <Form style={formStyle} wrapperCol={{span: 16}} layout="inline" onFinish={onFinish} form={form}
-                  initialValues={{
-                      ["name"]: "",
-                      ["project_type_id"]: "",
-                  }}
             >
                 <Form.Item
                     label="Project name"

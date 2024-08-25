@@ -13,15 +13,28 @@ const ProjectManagement: React.FC = () => {
     const [isOpen, setOpen] = useState(false);
     const { confirm } = Modal;
     const location = useLocation();
+    const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
-        const fetchData = async () => {
-            const project = await ProjectApiService.getProject();
-            const projectType = await ProjectApiService.getProjectType();
+        // @ts-ignore
+        const storedProject = JSON.parse(localStorage.getItem('projectData'));
+        if(!storedProject){
+            const fetchData = async () => {
+                const project = await ProjectApiService.getProject();
+                const projectType = await ProjectApiService.getProjectType();
 
-            setData(project);
-            setProjectTypes(projectType);
-        };
-        fetchData();
+                setData(project);
+                setProjectTypes(projectType);
+            };
+            fetchData();
+        }else{
+            const fetchData = async () => {
+                const projectType = await ProjectApiService.getProjectType();
+
+                setData(storedProject);
+                setProjectTypes(projectType);
+            };
+            fetchData();
+        }
     }, []);
 
 
