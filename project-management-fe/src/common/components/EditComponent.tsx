@@ -1,4 +1,4 @@
-import {Alert, Button, Flex, Form, Input, InputNumber, message, Radio, Select, Space} from "antd";
+import {Alert, Button, Flex, Form, Input, message, Radio, Select, Space} from "antd";
 import {ProjectType} from "../types/ProjectType";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -101,7 +101,7 @@ const EditComponent = (props: any) => {
                                        {required: true, message: 'Name is required'},
                                        {type: 'string', message: 'Project name must be a string'},
                                        {
-                                           pattern: /^[a-zA-Z0-9\s]+$/,
+                                           pattern: /^[a-zA-Z0-9\u3040-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\s]+$/,
                                            message: 'Project name must not contain special characters'
                                        },
                                    ]}>

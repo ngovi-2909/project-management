@@ -7,10 +7,11 @@ import project from "../api/Project";
 
 
 const SearchComponent = (props: any) => {
-    const {Option} = Select;
     const [form] = Form.useForm();
+
     // @ts-ignore
     const storedName = JSON.parse(localStorage.getItem('projectName'));
+
     // @ts-ignore
     const storedType = JSON.parse(localStorage.getItem('projectType'));
     const [projectName, setProjectName] = useState(storedName);
@@ -21,7 +22,6 @@ const SearchComponent = (props: any) => {
         padding: 24,
         margin: '0 auto',
     };
-    const [project, setProject] = useState();
     const onFinish = async () => {
         const projectName = form.getFieldValue('name');
         const type = form.getFieldValue('project_type_id');
