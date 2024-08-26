@@ -36,6 +36,7 @@ const EditComponent = (props: any) => {
         if (statusResult.status == 200) {
             message.success('Update project successfully', 2);
             setError(false);
+            localStorage.removeItem('projectData');
 
             // Set a timeout to navigate to the '/project' route after 1.5 seconds
             setTimeout(() => {
@@ -94,7 +95,7 @@ const EditComponent = (props: any) => {
                             {min: 6, max: 6, message: 'Number must be a 6-digit number'},
                             {pattern: /^[0-9]+$/, message: 'Project code must be a number'},
                         ]}>
-                            <Input size="large" type="string"/>
+                            <Input size="large" type="string" disabled/>
                         </Form.Item>
                         <Form.Item label="Project name" name="name"
                                    rules={[

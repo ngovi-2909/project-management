@@ -50,6 +50,7 @@ const CreateComponent = () => {
 
             message.success('Create project successfully', 2);
             setError(false);
+            localStorage.removeItem('projectData');
 
             // Set a timeout to navigate to the '/project' route after 1.5 seconds
             setTimeout(() => {

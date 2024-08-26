@@ -35,6 +35,7 @@ const ProjectManagement: React.FC = () => {
             };
             fetchData();
         }
+
     }, []);
 
 
@@ -57,6 +58,7 @@ const ProjectManagement: React.FC = () => {
                         const statusResult = ProjectApiService.deleteProject(code);
                         setTimeout(() => {
                             message.success('Delete project successfully', 1);
+
                             // @ts-ignore
                             setData((prevData) => prevData.filter((item: { code: number }) => item.code !== code));
                             Math.random() > 0.5 ? resolve() : reject();
