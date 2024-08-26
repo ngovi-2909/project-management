@@ -1,6 +1,6 @@
-import api from "./config";
-import {BASE_URL} from "../../contants/BaseURL";
-import {Project} from "../types/Project";
+import api from './config';
+import {BASE_URL} from '../../contants/BaseURL';
+import {Project} from '../types/Project';
 
 
 const getProjectType = async () => {

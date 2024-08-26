@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {Table, TableProps, Space, Button, Modal, Alert, message} from "antd";
+import React, {useEffect, useState} from 'react';
+import {Table, TableProps, Space, Button, Modal, message} from 'antd';
 import '../common/css/common.css';
-import SearchComponent from "../common/components/SearchComponent";
-import {AntDesignOutlined, ExclamationCircleFilled} from "@ant-design/icons";
-import ProjectApiService from "../common/api/Project";
-import {Project} from "../common/types/Project";
+import SearchComponent from '../common/components/SearchComponent';
+import {AntDesignOutlined, ExclamationCircleFilled} from '@ant-design/icons';
+import ProjectApiService from '../common/api/Project';
+import {Project} from '../common/types/Project';
 import {useLocation, useNavigate} from 'react-router-dom';
 const ProjectManagement: React.FC = () => {
     const [data, setData] = useState();
@@ -12,8 +12,6 @@ const ProjectManagement: React.FC = () => {
     const navigate = useNavigate();
     const [isOpen, setOpen] = useState(false);
     const { confirm } = Modal;
-    const location = useLocation();
-    const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
         // @ts-ignore
         const storedProject = JSON.parse(localStorage.getItem('projectData'));
@@ -40,11 +38,11 @@ const ProjectManagement: React.FC = () => {
 
 
     const handleClick = () => {
-          navigate("/create");
+          navigate('/create');
     };
 
     const handleEditClick = (code: string) => {
-        navigate("/edit?code="+code);
+        navigate('/edit?code='+code);
     };
 
     const handleDeleteClick = (code : string) => {
@@ -117,8 +115,8 @@ const ProjectManagement: React.FC = () => {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Space size="middle">
-                    <Button type="primary" ghost onClick={() => handleEditClick(record.code)}>Edit</Button>
+                <Space size='middle'>
+                    <Button type='primary' ghost onClick={() => handleEditClick(record.code)}>Edit</Button>
                     <Button danger onClick={() => handleDeleteClick(record.code)}>Delete</Button>
                 </Space>
             ),
@@ -127,12 +125,12 @@ const ProjectManagement: React.FC = () => {
 
     return (
         <div>
-            <div className="card" style={{margin: '50px auto', padding: '0px 50px'}}>
+            <div className='card' style={{margin: '50px auto', padding: '0px 50px'}}>
                 <h1>List of projects</h1>
-                <div className="right-btn">
-                    <Button type="primary" size="large" icon={<AntDesignOutlined/>} onClick={handleClick}>Add</Button>
+                <div className='right-btn'>
+                    <Button type='primary' size='large' icon={<AntDesignOutlined/>} onClick={handleClick}>Add</Button>
                 </div>
-                <div className="search-component">
+                <div className='search-component'>
                     <SearchComponent projectTypes={projectTypes} onProjectUpdate={handleSearchProject}/>
                 </div>
                 <Table dataSource={data} columns={columns} pagination={{

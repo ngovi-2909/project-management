@@ -1,11 +1,11 @@
-import {Alert, Button, Flex, Form, Input, message, Radio, Select, Space} from "antd";
-import {ProjectType} from "../types/ProjectType";
-import React, {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import ProjectApiService from "../api/Project";
-import project from "../api/Project";
-import {Project} from "../types/Project";
-import MessageValues from "../message/Message";
+import {Alert, Button, Flex, Form, Input, message, Radio, Select, Space} from 'antd';
+import {ProjectType} from '../types/ProjectType';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import ProjectApiService from '../api/Project';
+import project from '../api/Project';
+import {Project} from '../types/Project';
+import MessageValues from '../message/Message';
 
 const EditComponent = (props: any) => {
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ const EditComponent = (props: any) => {
     const [searchParams] = useSearchParams();
     const [form] = Form.useForm();
     const [isError, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState('');
     let projectCode = searchParams.get('code');
 
     if (!projectCode) {
@@ -54,7 +54,7 @@ const EditComponent = (props: any) => {
         }
     };
     const handleCancelClick = () => {
-        navigate("/");
+        navigate('/');
     };
 
     useEffect(() => {
@@ -74,9 +74,9 @@ const EditComponent = (props: any) => {
 
     return (
         <>
-            <div className="create-component">
+            <div className='create-component'>
                 <Form
-                    layout="horizontal"
+                    layout='horizontal'
                     scrollToFirstError
                     labelCol={{span: 6}}
                     wrapperCol={{span: 14}}
@@ -89,15 +89,15 @@ const EditComponent = (props: any) => {
                     form={form}
                     initialValues={{}}
                 >
-                    <Space size="large" direction="vertical" style={{width: '100%'}}>
-                        <Form.Item label="Code" name="code" rules={[
+                    <Space size='large' direction='vertical' style={{width: '100%'}}>
+                        <Form.Item label='Code' name='code' rules={[
                             {required: true, message: 'Code is required'},
                             {min: 6, max: 6, message: 'Number must be a 6-digit number'},
                             {pattern: /^[0-9]+$/, message: 'Project code must be a number'},
                         ]}>
-                            <Input size="large" type="string" disabled/>
+                            <Input size='large' type='string' disabled/>
                         </Form.Item>
-                        <Form.Item label="Project name" name="name"
+                        <Form.Item label='Project name' name='name'
                                    rules={[
                                        {required: true, message: 'Name is required'},
                                        {type: 'string', message: 'Project name must be a string'},
@@ -106,11 +106,11 @@ const EditComponent = (props: any) => {
                                            message: 'Project name must not contain special characters'
                                        },
                                    ]}>
-                            <Input size="large" type="string" maxLength={200}/>
+                            <Input size='large' type='string' maxLength={200}/>
                         </Form.Item>
-                        <Form.Item label="Type" name="project_type_id"
+                        <Form.Item label='Type' name='project_type_id'
                                    rules={[{required: true, message: 'Type is required'}]}>
-                            <Select size="large">
+                            <Select size='large'>
                                 {projectTypes && Array.isArray(projectTypes) && projectTypes.length > 0 ? (
                                     projectTypes.map((item: ProjectType) => (
                                         <Select.Option key={item.id} value={item.id} label={item.name}>
@@ -118,11 +118,11 @@ const EditComponent = (props: any) => {
                                         </Select.Option>
                                     ))
                                 ) : (
-                                    <Select.Option value="">No project types available</Select.Option>
+                                    <Select.Option value=''>No project types available</Select.Option>
                                 )}
                             </Select>
                         </Form.Item>
-                        <Form.Item label="Status" name="status"
+                        <Form.Item label='Status' name='status'
                                    rules={[{required: true, message: 'Status is required'}]}>
                             <Radio.Group>
                                 <Radio value={true}> Enabled </Radio>
@@ -130,18 +130,18 @@ const EditComponent = (props: any) => {
                             </Radio.Group>
                         </Form.Item>
                         <Form.Item wrapperCol={{offset: 2}}>
-                            <Flex gap="80px" justify="center" align="center">
-                                <Button type="primary" htmlType="submit" size="large">Add</Button>
-                                <Button type="default" size="large" onClick={handleCancelClick}>Cancel</Button>
+                            <Flex gap='80px' justify='center' align='center'>
+                                <Button type='primary' htmlType='submit' size='large'>Add</Button>
+                                <Button type='default' size='large' onClick={handleCancelClick}>Cancel</Button>
                             </Flex>
                         </Form.Item>
                     </Space>
                 </Form>
                 {isError &&
                     <Alert
-                        message="Error"
+                        message='Error'
                         description={errorMessage}
-                        type="error"
+                        type='error'
                         showIcon
                         closable
                     />} {/* Display the error message */}

@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "complex": "ts-plato --recurse --quiet --eslint ./.eslintrc --noempty -d report/index.html ./client/src"
+    "complex": "./node_modules/.bin/ts-plato -r -d ./report src"
   },
   "eslintConfig": {
     "extends": [

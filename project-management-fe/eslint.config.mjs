@@ -24,17 +24,14 @@ export default [...compat.extends(
         react,
         "@typescript-eslint": typescriptEslint,
     },
-
     languageOptions: {
         globals: {
             ...globals.browser,
             'AudioWorkletGlobalScope': 'readonly',
         },
-
         parser: tsParser,
         ecmaVersion: "latest",
         sourceType: "script",
-
         parserOptions: {
             files: ["*.ts", "*.tsx"],
             project: ["**/tsconfig.json"],

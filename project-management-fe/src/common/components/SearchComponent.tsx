@@ -1,10 +1,7 @@
-import {Button, Form, Input, Select} from "antd";
-import React, {useEffect, useState} from "react";
-import {ProjectType} from "../types/ProjectType";
-import Project from "../api/Project";
-import ProjectApiService from "../api/Project";
-import project from "../api/Project";
-
+import {Button, Form, Input, Select} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {ProjectType} from '../types/ProjectType';
+import ProjectApiService from '../api/Project';
 
 const SearchComponent = (props: any) => {
     const [form] = Form.useForm();
@@ -42,8 +39,7 @@ const SearchComponent = (props: any) => {
 
     return (
         <>
-            <Form style={formStyle} wrapperCol={{span: 16}} layout="inline" onFinish={onFinish} form={form}
-            >
+            <Form style={formStyle} wrapperCol={{span: 16}} layout="inline" onFinish={onFinish} form={form}>
                 <Form.Item
                     label="Project name"
                     name="name"

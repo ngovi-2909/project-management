@@ -1,9 +1,9 @@
-import {HttpException, HttpStatus, Inject, Injectable, NotFoundException} from "@nestjs/common";
+import {HttpException, HttpStatus, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {CreateProjectDto} from './dto/create-project.dto';
 import {UpdateProjectDto} from './dto/update-project.dto';
-import {Project} from "./entities/project.entity";
+import {Project} from './entities/project.entity';
 import {Op} from 'sequelize';
-import {PROJECT_REPOSITORY} from "../core/constant";
+import {PROJECT_REPOSITORY} from '../core/constant';
 
 @Injectable()
 export class ProjectService {
