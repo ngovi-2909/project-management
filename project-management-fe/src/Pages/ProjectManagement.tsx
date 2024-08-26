@@ -5,31 +5,50 @@ import SearchComponent from '../common/components/SearchComponent';
 import {AntDesignOutlined, ExclamationCircleFilled} from '@ant-design/icons';
 import ProjectApiService from '../common/api/Project';
 import {Project} from '../common/types/Project';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+
 const ProjectManagement: React.FC = () => {
     const [data, setData] = useState();
-    const [projectTypes, setProjectTypes] = useState();
+    const [projectTypes, setProjectTypes] = useState([]);
     const navigate = useNavigate();
     const [isOpen, setOpen] = useState(false);
-    const { confirm } = Modal;
+    const {confirm} = Modal;
     useEffect(() => {
         // @ts-ignore
         const storedProject = JSON.parse(localStorage.getItem('projectData'));
-        if(!storedProject){
-            const fetchData = async () => {
-                const project = await ProjectApiService.getProject();
-                const projectType = await ProjectApiService.getProjectType();
 
-                setData(project);
-                setProjectTypes(projectType);
+        if (!storedProject) {
+            const fetchData = async () => {
+                try {
+                    const project = await ProjectApiService.getProject();
+                    const projectType = await ProjectApiService.getProjectType();
+
+                    setData(project.data);
+
+                    if(projectType !== undefined)
+                        setProjectTypes(projectType.data);
+                } catch (err) {
+                    console.log(err);
+                    navigate('/error');
+                }
             };
-            fetchData();
-        }else{
-            const fetchData = async () => {
-                const projectType = await ProjectApiService.getProjectType();
 
-                setData(storedProject);
-                setProjectTypes(projectType);
+            fetchData();
+
+        } else {
+            const fetchData = async () => {
+                try {
+                    const projectType = await ProjectApiService.getProjectType();
+
+                    setData(storedProject.data);
+
+                    if(projectType !== undefined)
+                        setProjectTypes(projectType.data);
+
+                } catch (err) {
+                    console.log(err);
+                    navigate('/error');
+                }
             };
             fetchData();
         }
@@ -38,21 +57,21 @@ const ProjectManagement: React.FC = () => {
 
 
     const handleClick = () => {
-          navigate('/create');
+        navigate('/create');
     };
 
     const handleEditClick = (code: string) => {
-        navigate('/edit?code='+code);
+        navigate('/edit?code=' + code);
     };
 
-    const handleDeleteClick = (code : string) => {
+    const handleDeleteClick = (code: string) => {
         confirm({
             title: 'Delete Project',
-            icon: <ExclamationCircleFilled />,
+            icon: <ExclamationCircleFilled/>,
             content: 'Do you want to delete project code ' + code + '?',
-            onOk(){
+            onOk() {
                 return new Promise<void>((resolve, reject) => {
-                    try{
+                    try {
                         const statusResult = ProjectApiService.deleteProject(code);
                         setTimeout(() => {
                             message.success('Delete project successfully', 1);
@@ -61,7 +80,7 @@ const ProjectManagement: React.FC = () => {
                             setData((prevData) => prevData.filter((item: { code: number }) => item.code !== code));
                             Math.random() > 0.5 ? resolve() : reject();
                         }, 1000);
-                    }catch(error){
+                    } catch (error) {
                         message.error('Cannot delete project code ' + code);
                     }
                 }).catch(() => message.error('Cannot delete project code ' + code));
@@ -105,10 +124,17 @@ const ProjectManagement: React.FC = () => {
             dataIndex: 'project_type_id',
             key: 'project_type_id',
             render: (projectTypeId: number) => {
-                // @ts-ignore
-                const projectType = projectTypes.map((type: { id: number; name: string; }) => type.id === projectTypeId && type.name).find(Boolean);
+                if (projectTypes) {
+                    // @ts-ignore
+                    const projectType = projectTypes.map((type: {
+                        id: number;
+                        name: string;
+                    }) => type.id === projectTypeId && type.name).find(Boolean);
 
-                return projectType || 'Unknown';
+                    return projectType || 'Unknown';
+                }
+
+                return 'Unknown';
             },
         },
         {

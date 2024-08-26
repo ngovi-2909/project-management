@@ -11,7 +11,7 @@ export class ProjectTypeService {
   constructor(@Inject(PROJECT_TYPE_REPOSITORY) private readonly projectTypeRepo: typeof ProjectType) {}
 
 
-  // insert project type is web, app on first run
+  // insert project type which are web, app on first run
   async onApplicationBootstrap() {
     await this.ensureInitialProjectTypes();
   }

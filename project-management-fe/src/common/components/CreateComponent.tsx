@@ -22,9 +22,15 @@ const CreateComponent = () => {
     const [errorMessage, setErrorMessage] = useState('');
     useEffect(() => {
         const fetchData = async () => {
-            const projectType = await ProjectApiService.getProjectType();
+            try{
+                const projectType = await ProjectApiService.getProjectType();
+                console.log(projectType);
+                if(projectType !== undefined)
+                    setProjectType(projectType.data);
+            }catch(err){
+                navigate('error');
+            }
 
-            setProjectType(projectType);
         };
         fetchData();
     }, []);

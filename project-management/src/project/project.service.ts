@@ -4,6 +4,7 @@ import {UpdateProjectDto} from './dto/update-project.dto';
 import {Project} from './entities/project.entity';
 import {Op} from 'sequelize';
 import {PROJECT_REPOSITORY} from '../core/constant';
+import {RuntimeException} from "@nestjs/core/errors/exceptions";
 
 @Injectable()
 export class ProjectService {
@@ -18,9 +19,14 @@ export class ProjectService {
   }
 
   async getAllProject() {
-    return await this.projectRepository.findAll({
+    try{
+      return await this.projectRepository.findAll({
         order: [['code', 'ASC']],
       });
+    }catch(error){
+      throw new RuntimeException('Server is down. Please try again later!');
+    }
+
   }
 
   async findOne(code: string) {

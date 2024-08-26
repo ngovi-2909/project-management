@@ -4,10 +4,11 @@ import {Project} from '../types/Project';
 
 
 const getProjectType = async () => {
-    return await api.get(BASE_URL + '/api/v1/project-type').then((response: any) => {
+    try{
+        const result =  await api.get(BASE_URL + '/api/v1/project-type');
         const projectTypes: any = [];
-        if (response?.data) {
-            const lists = response.data;
+        if (result?.data) {
+            const lists = result.data;
             Object.keys(lists).forEach(key => {
                 projectTypes.push({
                     id: lists[key].id,
@@ -16,16 +17,25 @@ const getProjectType = async () => {
             });
         }
 
-        return projectTypes;
-    });
+        return {status: result.status, data: projectTypes};
+
+    }catch(err){
+        console.log(err);
+
+        return {status: 500, data: []};
+    }
 };
 
 const getProject = async () => {
-    return await api.get(BASE_URL + '/api/v1/project').then((response: any) => {
-        if (response?.data) {
-            return response.data;
-        }
-    }).catch();
+    try {
+        const result = await api.get(BASE_URL + '/api/v1/project');
+
+        return {status: result.status, data: result.data, error: null};
+
+    } catch (err) {
+        return {status: 500, data: null, error: 'Network Error'};
+    }
+
 };
 
 const addProject = async (project: Project): Promise<{ status: number; error?: any }> => {
@@ -40,11 +50,11 @@ const addProject = async (project: Project): Promise<{ status: number; error?: a
 };
 
 const getDetailProject = async (code: string) => {
-    try{
+    try {
         const response = await api.get(BASE_URL + '/api/v1/project/find/' + code);
 
         return {status: response.status, data: response.data};
-    }catch(error){
+    } catch (error) {
         return {status: 500, error: error};
     }
 };
@@ -63,19 +73,23 @@ const updateProject = async (project: Project, code: string): Promise<{ status: 
 const deleteProject = async (code: string) => {
     return await api.delete(BASE_URL + '/api/v1/project/' + code).then((response: any) => {
         return response.status;
-    }).catch();
+    }).catch(err => {
+        return {status: 500, error: 'Network Error'};
+    });
 };
 
 const searchProject = async (name: string, type: number) => {
     const searchParams = new URLSearchParams();
     searchParams.append('name', name);
     searchParams.append('type', type.toString());
-
-    return await api.get(BASE_URL + `/api/v1/project/search/?${searchParams.toString()}`).then((response: any) => {
-        if (response.data && response.status == 200) {
-            return response.data;
+    try{
+        const result = await api.get(BASE_URL + `/api/v1/project/search/?${searchParams.toString()}`);
+        if (result.data && result.status == 200) {
+            return {status: result.status, data: result.data};
         }
-    }).catch();
+    }catch(err){
+        return {status: 500, data: []};
+    }
 };
 
 const ProjectApiService = {

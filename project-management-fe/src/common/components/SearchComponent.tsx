@@ -2,6 +2,7 @@ import {Button, Form, Input, Select} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {ProjectType} from '../types/ProjectType';
 import ProjectApiService from '../api/Project';
+import {useNavigate} from "react-router-dom";
 
 const SearchComponent = (props: any) => {
     const [form] = Form.useForm();
@@ -13,6 +14,8 @@ const SearchComponent = (props: any) => {
     const storedType = JSON.parse(localStorage.getItem('projectType'));
     const [projectName, setProjectName] = useState(storedName);
     const [projectType, setProjectType] = useState(storedType);
+    const navigate = useNavigate();
+
     const formStyle = {
         maxWidth: 'none',
         borderRadius: '10px',
@@ -22,12 +25,16 @@ const SearchComponent = (props: any) => {
     const onFinish = async () => {
         const projectName = form.getFieldValue('name');
         const type = form.getFieldValue('project_type_id');
-        const project = await ProjectApiService.searchProject(projectName, type);
-        localStorage.setItem('projectName', JSON.stringify(projectName));
-        localStorage.setItem('projectData', JSON.stringify(project));
-        localStorage.setItem('projectType', JSON.stringify(type));
-
-        await props.onProjectUpdate(project);
+        try{
+            const project = await ProjectApiService.searchProject(projectName, type);
+            localStorage.setItem('projectName', JSON.stringify(projectName));
+            localStorage.setItem('projectData', JSON.stringify(project));
+            localStorage.setItem('projectType', JSON.stringify(type));
+            if(project !== undefined)
+                await props.onProjectUpdate(project.data);
+        }catch(err){
+            navigate('/error');
+        }
     };
 
     useEffect( () => {

@@ -60,7 +60,8 @@ const EditComponent = (props: any) => {
     useEffect(() => {
         const fetchData = async () => {
             const projectType = await ProjectApiService.getProjectType();
-            setProjectType(projectType);
+            if(projectType !== undefined)
+                setProjectType(projectType.data);
             const project = await ProjectApiService.getDetailProject(String(projectCode));
             if (project.data) {
                 form.setFieldsValue(project.data);
