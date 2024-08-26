@@ -49,7 +49,7 @@ const SearchComponent = (props: any) => {
                     name="name"
                     style={{width: 'calc(60% - 8px)'}}
                     rules={[
-                        {pattern: /^[a-zA-Z0-9\s]+$/, message: 'Project name must not contain special characters'},
+                        {pattern: /^[a-zA-Z0-9\u3040-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\s]+$/, message: 'Project name must not contain special characters'},
                     ]}
                 >
                     <Input size="large" placeholder="Project name..." maxLength={200} value={projectName}/>
