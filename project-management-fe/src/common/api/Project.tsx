@@ -80,11 +80,10 @@ const searchProject = async (name: string, type: number) => {
     searchParams.append('type', type.toString());
     try {
         const result = await api.get(BASE_URL + `/api/v1/project/search/?${searchParams.toString()}`);
-        if (result.data && result.status == 200) {
-            return {status: result.status, data: result.data};
-        }
+
+        return {status: result.status, data: result.data, error: ''};
     } catch (err) {
-        return {status: 500, data: []};
+        return {status: 500, data: [], error: 'Network Error'};
     }
 };
 

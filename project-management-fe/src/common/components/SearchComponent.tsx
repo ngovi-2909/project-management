@@ -27,11 +27,13 @@ const SearchComponent = (props: any) => {
         const type = form.getFieldValue('project_type_id');
         try{
             const project = await ProjectApiService.searchProject(projectName, type);
+            if(project.error && project.error == 'Network Error'){
+                navigate('/error');
+            }
             localStorage.setItem('projectName', JSON.stringify(projectName));
             localStorage.setItem('projectData', JSON.stringify(project));
             localStorage.setItem('projectType', JSON.stringify(type));
-            if(project !== undefined)
-                await props.onProjectUpdate(project.data);
+            await props.onProjectUpdate(project.data);
         }catch(err){
             navigate('/error');
         }
