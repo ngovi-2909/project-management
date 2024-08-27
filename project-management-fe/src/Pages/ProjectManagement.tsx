@@ -182,7 +182,7 @@ const ProjectManagement: React.FC = () => {
                 </div>
                 <Table dataSource={data} columns={columns} pagination={{
                     position: ['bottomLeft'],
-                    pageSize: 5,
+                    pageSize: 10,
                     size: 'default'
                 }}/>
 

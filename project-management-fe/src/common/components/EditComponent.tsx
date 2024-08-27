@@ -102,14 +102,14 @@ const EditComponent = (props: any) => {
                     <Space size='large' direction='vertical' style={{width: '100%'}}>
                         <Form.Item label='Code' name='code' rules={[
                             {required: true, message: 'Code is required'},
-                            {min: 6, max: 6, message: 'Number must be a 6-digit number'},
-                            {pattern: /^[0-9]+$/, message: 'Project code must be a number'},
+                            {min: 6, max: 6, message: 'Code must be a 6-digit number'},
+                            {pattern: /^[0-9]+$/, message: 'Code must be a number'},
                         ]}>
                             <Input size='large' type='string' disabled/>
                         </Form.Item>
                         <Form.Item label='Project name' name='name'
                                    rules={[
-                                       {required: true, message: 'Name is required'},
+                                       {required: true, message: 'Project name is required'},
                                        {type: 'string', message: 'Project name must be a string'},
                                        {
                                            pattern: /^[a-zA-Z0-9\u3040-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\s]+$/,
