@@ -17,18 +17,28 @@ const ProjectManagement: React.FC = () => {
         // @ts-ignore
         const storedProject = JSON.parse(localStorage.getItem('projectData'));
 
-        if (!storedProject) {
+        if (!storedProject || storedProject.length === 0) {
             const fetchData = async () => {
                 try {
-                    const project = await ProjectApiService.getProject();
-                    const projectType = await ProjectApiService.getProjectType();
+                    const project = await ProjectApiService.getProject().then(res => {
+                        setData(res.data);
+                        if(res.error != ''){
+                            navigate('/error');
+                        }
+                    }).catch(err => {
+                        navigate('/error');
+                    });
 
-                    setData(project.data);
+                    const projectType = await ProjectApiService.getProjectType().then(res => {
+                        setProjectTypes(res.data);
+                        if(res.error != ''){
+                            navigate('/error');
+                        }
+                    }).catch(err => {
+                        navigate('/error');
+                    });
 
-                    if(projectType !== undefined)
-                        setProjectTypes(projectType.data);
                 } catch (err) {
-                    console.log(err);
                     navigate('/error');
                 }
             };
@@ -37,18 +47,19 @@ const ProjectManagement: React.FC = () => {
 
         } else {
             const fetchData = async () => {
-                try {
-                    const projectType = await ProjectApiService.getProjectType();
+                setData(storedProject.data);
+                const result = await ProjectApiService.getProjectType().then(res => {
+                    if (res.data) {
+                        setProjectTypes(res.data);
+                    }
+                    if (res.error != '') {
+                        navigate('/error');
+                    }
 
-                    setData(storedProject.data);
-
-                    if(projectType !== undefined)
-                        setProjectTypes(projectType.data);
-
-                } catch (err) {
+                }).catch(err => {
                     console.log(err);
                     navigate('/error');
-                }
+                });
             };
             fetchData();
         }
@@ -72,14 +83,24 @@ const ProjectManagement: React.FC = () => {
             onOk() {
                 return new Promise<void>((resolve, reject) => {
                     try {
-                        const statusResult = ProjectApiService.deleteProject(code);
-                        setTimeout(() => {
-                            message.success('Delete project successfully', 1);
+                        const statusResult = ProjectApiService.deleteProject(code).then(res => {
+                            if(res.error == 'Network Error'){
+                                Math.random() > 0.5 ? resolve() : reject();
+                                setTimeout( () => {
+                                    navigate('/error');
+                                }, 1000);
 
-                            // @ts-ignore
-                            setData((prevData) => prevData.filter((item: { code: number }) => item.code !== code));
-                            Math.random() > 0.5 ? resolve() : reject();
-                        }, 1000);
+                            }else{
+                                setTimeout(() => {
+                                    message.success('Delete project successfully', 1);
+
+                                    // @ts-ignore
+                                    setData((prevData) => prevData.filter((item: { code: number }) => item.code !== code));
+                                    Math.random() > 0.5 ? resolve() : reject();
+                                }, 1000);
+                            }
+                        });
+
                     } catch (error) {
                         message.error('Cannot delete project code ' + code);
                     }

@@ -33,25 +33,30 @@ const EditComponent = (props: any) => {
             project_type_id: type,
         };
         const statusResult = await ProjectApiService.updateProject(project, code);
-        if (statusResult.status == 200) {
-            message.success('Update project successfully', 2);
-            setError(false);
-            localStorage.removeItem('projectData');
+        if(statusResult.error.message == 'Network Error'){
+            navigate('/error');
+        }else{
+            if (statusResult.status == 200) {
+                message.success('Update project successfully', 2);
+                setError(false);
+                localStorage.removeItem('projectData');
 
-            // Set a timeout to navigate to the '/project' route after 1.5 seconds
-            setTimeout(() => {
-                navigate('/');
-            }, 1500);
-        } else {
-            setError(true);
-            const errorMessage = statusResult.error.response.data.message ? statusResult.error.response.data.message : '';
-            if (errorMessage != '') {
-                const foundMessage = MessageValues.find((message) => message.key === errorMessage);
-                if (foundMessage) {
-                    setErrorMessage(foundMessage.value);
+                // Set a timeout to navigate to the '/project' route after 1.5 seconds
+                setTimeout(() => {
+                    navigate('/');
+                }, 1500);
+            } else {
+                setError(true);
+                const errorMessage = statusResult.error.response.data.message ? statusResult.error.response.data.message : '';
+                if (errorMessage != '') {
+                    const foundMessage = MessageValues.find((message) => message.key === errorMessage);
+                    if (foundMessage) {
+                        setErrorMessage(foundMessage.value);
+                    }
                 }
             }
         }
+
     };
     const handleCancelClick = () => {
         navigate('/');
@@ -60,9 +65,13 @@ const EditComponent = (props: any) => {
     useEffect(() => {
         const fetchData = async () => {
             const projectType = await ProjectApiService.getProjectType();
-            if(projectType !== undefined)
-                setProjectType(projectType.data);
             const project = await ProjectApiService.getDetailProject(String(projectCode));
+
+            if (projectType.error || project.error) {
+                navigate('/error');
+            }
+
+            setProjectType(projectType.data);
             if (project.data) {
                 form.setFieldsValue(project.data);
             } else {

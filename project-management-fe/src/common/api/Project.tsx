@@ -4,11 +4,10 @@ import {Project} from '../types/Project';
 
 
 const getProjectType = async () => {
-    try{
-        const result =  await api.get(BASE_URL + '/api/v1/project-type');
+    return await api.get(BASE_URL + '/api/v1/project-type').then(res => {
         const projectTypes: any = [];
-        if (result?.data) {
-            const lists = result.data;
+        if (res?.data) {
+            const lists = res.data;
             Object.keys(lists).forEach(key => {
                 projectTypes.push({
                     id: lists[key].id,
@@ -17,35 +16,32 @@ const getProjectType = async () => {
             });
         }
 
-        return {status: result.status, data: projectTypes};
+        return {status: res.status, data: projectTypes, error: ''};
+    }).catch(err => {
+        return {status: 500, data: [], error: err};
+    });
 
-    }catch(err){
-        console.log(err);
-
-        return {status: 500, data: []};
-    }
 };
 
 const getProject = async () => {
-    try {
-        const result = await api.get(BASE_URL + '/api/v1/project');
-
-        return {status: result.status, data: result.data, error: null};
-
-    } catch (err) {
-        return {status: 500, data: null, error: 'Network Error'};
-    }
+    return await api.get(BASE_URL + '/api/v1/project').then(res => {
+        return {status: res.status, data: res.data, error: ''};
+    }).catch(err => {
+        return {status: 500, data: [], error: err};
+    });
 
 };
 
 const addProject = async (project: Project): Promise<{ status: number; error?: any }> => {
     try {
-        const response = await api.post(BASE_URL + '/api/v1/project', project);
+        return await api.post(BASE_URL + '/api/v1/project', project).then(res => {
+            return {status: res.status, error: ''};
+        }).catch(err => {
+            return {status: 500, error: err};
+        });
 
-        return {status: response.status};
     } catch (error) {
-        // @ts-ignore
-        return {status: 500, error: error};
+        return {status: 406, error: error};
     }
 };
 
@@ -72,7 +68,7 @@ const updateProject = async (project: Project, code: string): Promise<{ status: 
 
 const deleteProject = async (code: string) => {
     return await api.delete(BASE_URL + '/api/v1/project/' + code).then((response: any) => {
-        return response.status;
+        return {status: response.status, error: ''};
     }).catch(err => {
         return {status: 500, error: 'Network Error'};
     });
@@ -82,12 +78,12 @@ const searchProject = async (name: string, type: number) => {
     const searchParams = new URLSearchParams();
     searchParams.append('name', name);
     searchParams.append('type', type.toString());
-    try{
+    try {
         const result = await api.get(BASE_URL + `/api/v1/project/search/?${searchParams.toString()}`);
         if (result.data && result.status == 200) {
             return {status: result.status, data: result.data};
         }
-    }catch(err){
+    } catch (err) {
         return {status: 500, data: []};
     }
 };
