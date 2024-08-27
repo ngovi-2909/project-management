@@ -88,7 +88,7 @@ const ProjectManagement: React.FC = () => {
                                 Math.random() > 0.5 ? resolve() : reject();
                                 setTimeout( () => {
                                     navigate('/error');
-                                }, 1000);
+                                }, 2000);
 
                             }else if(res.error == ''){
                                 setTimeout(() => {
