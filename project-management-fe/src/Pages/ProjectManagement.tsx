@@ -90,7 +90,7 @@ const ProjectManagement: React.FC = () => {
                                     navigate('/error');
                                 }, 1000);
 
-                            }else{
+                            }else if(res.error == ''){
                                 setTimeout(() => {
                                     message.success('Delete project successfully', 1);
 

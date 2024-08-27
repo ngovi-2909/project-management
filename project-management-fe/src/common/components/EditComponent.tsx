@@ -33,7 +33,7 @@ const EditComponent = (props: any) => {
             project_type_id: type,
         };
         const statusResult = await ProjectApiService.updateProject(project, code);
-        if(statusResult.error.message == 'Network Error'){
+        if(statusResult.error.message && statusResult.error.message == 'Network Error'){
             navigate('/error');
         }else{
             if (statusResult.status == 200) {

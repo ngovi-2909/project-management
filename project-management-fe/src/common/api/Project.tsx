@@ -49,9 +49,9 @@ const getDetailProject = async (code: string) => {
     try {
         const response = await api.get(BASE_URL + '/api/v1/project/find/' + code);
 
-        return {status: response.status, data: response.data};
+        return {status: response.status, error: '', data: response.data};
     } catch (error) {
-        return {status: 500, error: error};
+        return {status: 500, error: error, data: []};
     }
 };
 
@@ -59,7 +59,7 @@ const updateProject = async (project: Project, code: string): Promise<{ status: 
     try {
         const response = await api.put(BASE_URL + '/api/v1/project/' + code, project);
 
-        return {status: response.status};
+        return {status: response.status, error: ''};
     } catch (error) {
         // @ts-ignore
         return {status: 500, error: error};
