@@ -8,10 +8,10 @@ const SearchComponent = (props: any) => {
     const [form] = Form.useForm();
 
     // @ts-ignore
-    const storedName = JSON.parse(localStorage.getItem('projectName'));
+    const storedName = JSON.parse(localStorage.getItem('projectName')) == null ? '': JSON.parse(localStorage.getItem('projectName'));
 
     // @ts-ignore
-    const storedType = JSON.parse(localStorage.getItem('projectType'));
+    const storedType = JSON.parse(localStorage.getItem('projectType')) == null ? '' : JSON.parse(localStorage.getItem('projectType'));
     const [projectName, setProjectName] = useState(storedName);
     const [projectType, setProjectType] = useState(storedType);
     const navigate = useNavigate();

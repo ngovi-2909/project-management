@@ -16,7 +16,7 @@ const ProjectManagement: React.FC = () => {
     useEffect(() => {
         // @ts-ignore
         const storedProject = JSON.parse(localStorage.getItem('projectData'));
-
+        console.log(storedProject);
         if (!storedProject || storedProject.length === 0) {
             const fetchData = async () => {
                 try {
