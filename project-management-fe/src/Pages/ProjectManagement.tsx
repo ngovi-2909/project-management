@@ -102,9 +102,10 @@ const ProjectManagement: React.FC = () => {
                         });
 
                     } catch (error) {
-                        message.error('Cannot delete project code ' + code);
+                        if(error != '')
+                            message.error('Cannot delete project code ' + code);
                     }
-                }).catch(() => message.error('Cannot delete project code ' + code));
+                });
             },
             onCancel: handleCancelDelete,
         });
